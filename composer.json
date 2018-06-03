@@ -1,0 +1,15 @@
+{
+    "name": "yurunsoft/mddoc",
+    "description": "use php to build markdown doc",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Yurun\\MdDoc\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "joyqi/hyper-down" : "dev-master"
+    }
+}
