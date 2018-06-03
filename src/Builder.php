@@ -22,6 +22,12 @@ class Builder
     public $templatePath;
 
     /**
+     * 生成数据
+     * @var array
+     */
+    protected $buildData;
+
+    /**
      * 构造方法
      * @param string $markdownPath markdown文档路径
      * @param string $htmlPath 要保存html的根路径
@@ -50,6 +56,8 @@ class Builder
     {
         $this->clearHtmlPath();
         $this->copyStatics();
+        $this->prepareBuildData();
+        $this->buildDocs();
     }
 
     /**
@@ -70,5 +78,38 @@ class Builder
         File::copy(File::path($this->templatePath, 'js'), File::path($this->htmlPath, 'js'));
         File::copy(File::path($this->templatePath, 'css'), File::path($this->htmlPath, 'css'));
         File::copy(File::path($this->templatePath, 'images'), File::path($this->htmlPath, 'images'));
+    }
+
+    /**
+     * 准备生成数据
+     * @return void
+     */
+    protected function prepareBuildData()
+    {
+        $this->buildData = [
+            'catalog'   =>  [],
+        ];
+
+        $catalogFileName = File::path($this->markdownPath, 'SUMMARY.md');
+    }
+
+    protected function parseMarkdownFiles()
+    {
+        $directory = new \RecursiveDirectoryIterator($dirPath);
+        $iterator = new \RecursiveIteratorIterator($directory);
+        $regex = new \RegexIterator($iterator, '/^.+\.md$/i', \RecursiveRegexIterator::GET_MATCH);
+        foreach($regex as $item)
+        {
+            
+        }
+    }
+
+    /**
+     * 生成文档
+     * @return void
+     */
+    protected function buildDocs()
+    {
+        var_dump($this->buildData);
     }
 }
