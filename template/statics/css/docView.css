@@ -256,10 +256,6 @@ span.tmpzTreeMove_arrow {
 	color: #009688
 }
 
-.editormd-html-preview code, .editormd-html-preview kbd, .editormd-preview-container code, .editormd-preview-container kbd {
-	font-family: Menlo, Monaco, Menlo, Consolas, source-code-pro, "Liberation Mono", "Ubuntu Mono", Courier, "Helvetica Neue", "Microsoft Yahei", 微软雅黑, "Lantinghei SC", STXihei, WenQuanYi, sans-serif !important;
-}
-
 /* markdown正文 */
 
 .markdown-body {
