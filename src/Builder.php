@@ -168,7 +168,7 @@ class Builder
             $path = dirname($savePath);
             if(!is_dir($path))
             {
-                mkdir($path, true);
+                mkdir($path, 0777, true);
             }
             file_put_contents($savePath, $content);
         }
