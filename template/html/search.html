@@ -1,5 +1,10 @@
 var searchDatas = <?=json_encode($searchDatas)?>;
 
+String.prototype.indexOf = function(f){
+    var rt = this.match(eval("/"+ f +"/i"));
+    return (rt == null) ? -1:rt.index;
+}
+
 function switchSearchNode(a)
 {
 	if ('pushState' in history)
