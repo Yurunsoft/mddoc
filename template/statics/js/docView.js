@@ -39,11 +39,6 @@ function switchNode(event, treeId, treeNode)
 {
 	if ('pushState' in history)
 	{
-		loadingHandler = layer.open({
-			type:3,
-			icon:2,
-			shade:0.1,
-		});
 		getChapter(treeNode.url);
 		history.pushState('', '', treeNode.url);
 	}
@@ -56,6 +51,15 @@ function switchNode(event, treeId, treeNode)
 
 function getChapter(url)
 {
+	if(void 0 === url)
+	{
+		return;
+	}
+	loadingHandler = layer.open({
+		type:3,
+		icon:2,
+		shade:0.1,
+	});
 	$.ajax({
 		method: 'GET',
 		url: url,

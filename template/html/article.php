@@ -168,8 +168,21 @@
 				showLeftbar();
 			}
 		})
-		var currentCatalog = <?=json_encode($currentCatalog)?>;	
-		initTree(<?=json_encode($data['catalogList'])?>);
+		function parseCatalogItem(item)
+		{
+			item.url = new Array(<?=substr_count($currentCatalog['url'], '/')?> + 1).join('../') + item.url;
+			return item;
+		}
+		var currentCatalog = parseCatalogItem(<?=json_encode($currentCatalog)?>);
+		var catalogList = <?=json_encode($data['catalogList'])?>;
+		for(var i = 0; i < catalogList.length; ++i)
+		{
+			if(void 0 !== catalogList[i].url)
+			{
+				catalogList[i] = parseCatalogItem(catalogList[i]);
+			}
+		}
+		initTree(catalogList);
 	</script>
 	<!-- left-end -->
 

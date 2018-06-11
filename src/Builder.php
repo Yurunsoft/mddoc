@@ -96,7 +96,15 @@ class Builder
      */
     public function loadConfig()
     {
-        $this->config = json_decode(file_get_contents(File::path($this->markdownPath, 'mddoc.json')), true);
+        $file = File::path($this->markdownPath, 'mddoc.json');
+        if(is_file($file))
+        {
+            $this->config = json_decode(file_get_contents($file), true);
+        }
+        else
+        {
+            $this->config = [];
+        }
     }
 
     /**
@@ -144,22 +152,16 @@ class Builder
     {
         foreach($this->buildData['catalogList'] as &$item)
         {
+            if(!isset($item['url']))
+            {
+                continue;
+            }
             ob_start();
-            if($item === $this->buildData['catalog'][0])
-            {
-                // 首页
-                $fileName = 'index.html';
-                $this->buildData['catalog'][0]['url'] = 'index.html';
-            }
-            else
-            {
-                // 其它页
-                $fileName = $item['url'];
-            }
+            $fileName = $item['url'];
             $savePath = File::path($this->htmlPath, $fileName);
             $articleContent = $this->parser->makeHtml(file_get_contents(File::path($this->markdownPath, $item['mdFileName'])));
             $this->articles[$item['id']] = $articleContent;
-            $this->renderTemplate(File::path($this->templatePath, 'html/article.html'), [
+            $this->renderTemplate(File::path($this->templatePath, 'html/article.php'), [
                 'data'              =>  $this->buildData,
                 'currentCatalog'    =>  $item,
                 'articleContent'    =>  $articleContent,
@@ -183,7 +185,8 @@ class Builder
 
     public function path($path)
     {
-        return $path;
+        $level = substr_count($this->renderData['currentCatalog']['url'], '/');
+        return str_repeat('../', $level) . $path;
     }
 
     protected function buildSearchJS()
@@ -193,10 +196,13 @@ class Builder
         $searchDatas = [];
         foreach($this->buildData['catalogList'] as $item)
         {
-            $item['content'] = preg_replace('/<[^>]+>/', '', $this->articles[$item['id']]);
-            $searchDatas[] = $item;
+            if(isset($item['url']))
+            {
+                $item['content'] = preg_replace('/<[^>]+>/', '', $this->articles[$item['id']]);
+                $searchDatas[] = $item;
+            }
         }
-        include File::path($this->templatePath, 'html/search.html');
+        include File::path($this->templatePath, 'html/search.php');
         $content = ob_get_clean();
         file_put_contents($savePath, $content);
     }

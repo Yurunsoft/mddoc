@@ -9,11 +9,6 @@ function switchSearchNode(a)
 {
 	if ('pushState' in history)
 	{
-		loadingHandler = layer.open({
-			type:3,
-			icon:2,
-			shade:0.1,
-		});
 		getChapter(a.attr('href'));
 		history.pushState('', '', a.attr('url'));
 		$('#treeSearch a').removeClass('curSelectedNode');
