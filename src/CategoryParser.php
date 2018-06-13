@@ -93,6 +93,7 @@ abstract class CategoryParser
                         $tmpLastItem['children'][] = &$item;
                         break;
                     }
+                    $tmpLastItem = &$tmpLastItem['parent'];
                 }
             }
             $lastItem = &$item;

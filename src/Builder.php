@@ -159,7 +159,7 @@ class Builder
             ob_start();
             $fileName = $item['url'];
             $savePath = File::path($this->htmlPath, $fileName);
-            $articleContent = $this->parser->makeHtml(file_get_contents(File::path($this->markdownPath, $item['mdFileName'])));
+            $articleContent = $this->markdownToHtml(file_get_contents(File::path($this->markdownPath, $item['mdFileName'])));
             $this->articles[$item['id']] = $articleContent;
             $this->renderTemplate(File::path($this->templatePath, 'html/article.php'), [
                 'data'              =>  $this->buildData,
@@ -205,5 +205,13 @@ class Builder
         include File::path($this->templatePath, 'html/search.php');
         $content = ob_get_clean();
         file_put_contents($savePath, $content);
+    }
+
+    public function markdownToHtml($content)
+    {
+        $content = $this->parser->makeHtml($content);
+        $content = str_replace('<li>[x]', '<li><input type="checkbox" disabled checked/>', $content);
+        $content = str_replace('<li>[ ]', '<li><input type="checkbox" disabled/>', $content);
+        return $content;
     }
 }

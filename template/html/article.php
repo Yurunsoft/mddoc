@@ -21,6 +21,13 @@
     <script src="<?=$this->path('statics/js/home.js')?>"></script>
 	<link rel="stylesheet" href="<?=$this->path('statics/css/docView.css')?>" />
     <script src="<?=$this->path('statics/js/docView.js')?>"></script>
+	<script>
+		function parseCatalogItem(item)
+		{
+			item.url = new Array(<?=substr_count($currentCatalog['url'], '/')?> + 1).join('../') + item.url;
+			return item;
+		}
+	</script>
     <script src="<?=$this->path('statics/js/mddoc-search.js')?>"></script>
 </head>
 <body>
@@ -168,11 +175,6 @@
 				showLeftbar();
 			}
 		})
-		function parseCatalogItem(item)
-		{
-			item.url = new Array(<?=substr_count($currentCatalog['url'], '/')?> + 1).join('../') + item.url;
-			return item;
-		}
 		var currentCatalog = parseCatalogItem(<?=json_encode($currentCatalog)?>);
 		var catalogList = <?=json_encode($data['catalogList'])?>;
 		for(var i = 0; i < catalogList.length; ++i)

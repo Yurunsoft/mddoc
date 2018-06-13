@@ -1,8 +1,15 @@
 var searchDatas = <?=json_encode($searchDatas)?>;
+for(var i = 0; i < searchDatas.length; ++i)
+{
+	if(void 0 !== searchDatas[i].url)
+	{
+		searchDatas[i] = parseCatalogItem(searchDatas[i]);
+	}
+}
 
-String.prototype.indexOf = function(f){
-    var rt = this.match(eval("/"+ f +"/i"));
-    return (rt == null) ? -1:rt.index;
+String.prototype.indexOf2 = function(f){
+    var rt = this.match(eval('/' + f + '/i'));
+    return (rt == null) ? -1 : rt.index;
 }
 
 function switchSearchNode(a)
@@ -32,7 +39,7 @@ function searchArticle(keyword)
 		}
         result = [];
         tSearchDatas.forEach(function(item, index){
-            if(item.content.indexOf(kw) > -1 || item.title.indexOf(kw) > -1)
+            if(item.content.indexOf2(kw) > -1 || item.title.indexOf2(kw) > -1)
             {
                 result.push(item);
             }
