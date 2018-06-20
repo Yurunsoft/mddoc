@@ -1,4 +1,7 @@
 * text=auto
+*.js linguist-language=php
+*.css linguist-language=php
+*.html linguist-language=php
 
 /.gitattributes export-ignore
 /.gitignore export-ignore
