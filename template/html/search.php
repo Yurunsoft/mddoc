@@ -1,10 +1,16 @@
-var searchDatas = <?=json_encode($searchDatas)?>;
-for(var i = 0; i < searchDatas.length; ++i)
+var originSearchDatas = <?=json_encode($searchDatas)?>;
+var searchDatas = [];
+function initSearchDatas()
 {
-	if(void 0 !== searchDatas[i].url)
+	searchDatas = JSON.parse(JSON.stringify(originSearchDatas));
+	for(var i = 0; i < searchDatas.length; ++i)
 	{
-		searchDatas[i] = parseCatalogItem(searchDatas[i]);
+		if(void 0 !== searchDatas[i].url)
+		{
+			searchDatas[i] = parseCatalogItem(searchDatas[i]);
+		}
 	}
+	doSearch($('#search-keyword').val());
 }
 
 String.prototype.indexOf2 = function(f){
@@ -17,7 +23,7 @@ function switchSearchNode(a)
 	if ('pushState' in history)
 	{
 		getChapter(a.attr('href'));
-		history.pushState('', '', a.attr('url'));
+		history.pushState('', '', a.attr('href'));
 		$('#treeSearch a').removeClass('curSelectedNode');
 		a.addClass('curSelectedNode');
 	}
@@ -60,22 +66,43 @@ function parseSearch()
 		}
 		var inputKeyword = $(this);
 		searchTimer = setTimeout(function(){
-			var result = searchArticle(inputKeyword.val());
-			if(result.length > 0)
-			{
-				$('.searchResultNone').hide();
-			}
-			else
-			{
-				$('.searchResultNone').show();
-			}
-			layui.laytpl($('#searchListTemplate').html()).render(result, function(html){
-				$('#treeSearch').html(html);
-			});
+			doSearch(inputKeyword.val());
 			searchTimer = null;
 		}, 200);
 		return false;
     });
+}
+
+function doSearch(keyword)
+{
+	var result = searchArticle(keyword);
+	if(result.length > 0)
+	{
+		$('.searchResultNone').hide();
+	}
+	else
+	{
+		$('.searchResultNone').show();
+	}
+	var index = -1;
+	$('#treeSearch a').each(function(i, item){
+		++index;
+		if($(item).hasClass('curSelectedNode'))
+		{
+			return false;
+		}
+	});
+	layui.laytpl($('#searchListTemplate').html()).render(result, function(html){
+		$('#treeSearch').html(html);
+		if(index >= 0)
+		{
+			var node = $('#treeSearch a').get(index);
+			if(null !== node)
+			{
+				$(node).addClass('curSelectedNode');
+			}
+		}
+	});
 }
 
 $(function(){

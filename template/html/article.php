@@ -21,14 +21,6 @@
     <script src="<?=$this->path('statics/js/home.js')?>"></script>
 	<link rel="stylesheet" href="<?=$this->path('statics/css/docView.css')?>" />
     <script src="<?=$this->path('statics/js/docView.js')?>"></script>
-	<script>
-		function parseCatalogItem(item)
-		{
-			item.url = new Array(<?=substr_count($currentCatalog['url'], '/')?> + 1).join('../') + item.url;
-			return item;
-		}
-	</script>
-    <script src="<?=$this->path('statics/js/mddoc-search.js')?>"></script>
 </head>
 <body>
 	<!-- top-begin -->
@@ -133,6 +125,34 @@
 		</li>
 		{{#  }) }}
 	</script>
+	<!-- left-end -->
+
+	<div id="body">
+		<div id="content_body" name="content_body" style="width:100%;height:100%;border:none;overflow: auto;">
+            <div id="article-content" class="markdown-body">
+				<script>
+					function parseCatalogItem(item)
+					{
+						item.url = new Array(<?=substr_count($currentCatalog['url'], '/')?> + 1).join('../') + item.url;
+						return item;
+					}
+
+					var currentCatalog = parseCatalogItem(<?=json_encode($currentCatalog)?>);
+					var catalogList = <?=json_encode($data['catalogList'])?>;
+					for(var i = 0; i < catalogList.length; ++i)
+					{
+						if(void 0 !== catalogList[i].url)
+						{
+							catalogList[i] = parseCatalogItem(catalogList[i]);
+						}
+					}
+					initTree(catalogList);
+				</script>
+                <?=$articleContent?>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		$(function(){
 			var leftBarTimeout = null;
@@ -175,26 +195,7 @@
 				showLeftbar();
 			}
 		})
-		var currentCatalog = parseCatalogItem(<?=json_encode($currentCatalog)?>);
-		var catalogList = <?=json_encode($data['catalogList'])?>;
-		for(var i = 0; i < catalogList.length; ++i)
-		{
-			if(void 0 !== catalogList[i].url)
-			{
-				catalogList[i] = parseCatalogItem(catalogList[i]);
-			}
-		}
-		initTree(catalogList);
 	</script>
-	<!-- left-end -->
-
-	<div id="body">
-		<div id="content_body" name="content_body" style="width:100%;height:100%;border:none;overflow: auto;">
-            <div id="article-content" class="markdown-body">
-                <?=$articleContent?>
-			</div>
-		</div>
-	</div>
-
+    <script src="<?=$this->path('statics/js/mddoc-search.js')?>"></script>
 </body>
 </html>

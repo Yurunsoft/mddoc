@@ -64,7 +64,8 @@ function getChapter(url)
 		method: 'GET',
 		url: url,
 		success: function(result){
-			$('#article-content').html($(result).find('#article-content').html());
+			var resultElement = $(result);
+			$('#article-content').html(resultElement.find('#article-content').html());
 			onContentChange();
 		},
 		error: function(){
@@ -125,6 +126,7 @@ function onContentChange()
 		pre.replaceWith(newPre);
 	});
 	SyntaxHighlighter.highlight();
+	initSearchDatas();
 	setTimeout(function(){
 		resizeCode();
 	}, 1)
