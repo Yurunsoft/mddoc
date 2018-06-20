@@ -33,7 +33,7 @@
 			</div>
 		</ul>
 		<div class="nav-menu">
-			<a href="<?=$this->path('statics//')?>" class="logo"><?=$this->config['name']?></a>
+			<a href="<?=$this->path('')?>" class="logo"><?=$this->config['name']?></a>
 			<a href="javascript:;" id="navMenuLeft"><i class="layui-icon">&#xe658;</i></a>
 			<a href="javascript:;" id="navMenuRight"><i class="layui-icon">&#xe61a;</i></a>
 		</div>
