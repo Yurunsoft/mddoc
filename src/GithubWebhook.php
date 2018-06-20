@@ -67,6 +67,10 @@ class GithubWebhook
 		// 生成
 
 		$builder = new Builder(File::path($this->config['downloadSavePath'], $firstFileName), $this->config['htmlSavePath']);
+		if(isset($this->config['templatePath']))
+		{
+			$builder->templatePath = $this->config['templatePath'];
+		}
 		$builder->build();
 	}
 }
