@@ -127,6 +127,13 @@ function onContentChange()
 	});
 	SyntaxHighlighter.highlight();
 	initSearchDatas();
+	$('#content_body a').each(function(){
+		var url = $(this).attr('href');
+		if(void 0 !== url && '#' !== url.substr(0, 1))
+		{
+			$(this).attr('target', '_blank');
+		}
+	})
 	setTimeout(function(){
 		resizeCode();
 	}, 1)
