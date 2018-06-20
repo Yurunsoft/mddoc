@@ -23,7 +23,7 @@ class GithubWebhook
 		// 密码验证
 		if(!isset($_GET['password'], $this->config['password']) || $this->config['password'] !== $_GET['password'] || '' === $this->config['password'])
 		{
-			exit('are you ok?');
+			exit('are you ok 1?');
 		}
 
 		// post数据
@@ -32,7 +32,7 @@ class GithubWebhook
 		// 事件验证
 		if(!isset($_SERVER['HTTP_X_GITHUB_EVENT']) || !in_array($_SERVER['HTTP_X_GITHUB_EVENT'], $this->config['events']))
 		{
-			exit('are you ok?');
+			exit('are you ok 2?');
 		}
 
 		// 下载
