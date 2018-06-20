@@ -61,11 +61,12 @@ class GithubWebhook
 		{
 			exit($zipFileName . ' 文件解压失败');
 		}
+		$firstFileName = $zip->getNameIndex(0);
 		$zip->close();
 
 		// 生成
 
-		$builder = new Builder($this->config['downloadSavePath'], $this->config['htmlSavePath']);
+		$builder = new Builder(File::path($this->config['downloadSavePath'], $firstFileName), $this->config['htmlSavePath']);
 		$builder->build();
 	}
 }
