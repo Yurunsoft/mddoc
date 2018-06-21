@@ -15,6 +15,7 @@ class GithubWebhook
 
 	public function __construct($config)
 	{
+		ignore_user_abort(true);
 		$this->config = $config;
 	}
 
