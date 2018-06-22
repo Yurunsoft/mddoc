@@ -8,7 +8,15 @@ abstract class CategoryParser
     public static function parse($content)
     {
         $contentList = explode('##', $content);
-        array_shift($contentList);
+        if(isset($contentList[1]))
+        {
+            array_shift($contentList);
+        }
+        else
+        {
+            $contentList = explode('# Summary', $content);
+            array_shift($contentList);
+        }
         $hasPart = false !== strpos($content, '##');
         $id = 0;
         $list = [];
@@ -46,6 +54,7 @@ abstract class CategoryParser
                     'children'  =>  [],
                     'parent'    =>  null,
                 ];
+                $item['url'] = trim($item['url'], './');
                 if(isset($partItem))
                 {
                     $list[] = $item;
