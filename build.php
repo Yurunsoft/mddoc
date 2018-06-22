@@ -24,4 +24,11 @@ if(null === $htmlPath)
 }
 
 $builder = new Builder($markdownPath, $htmlPath);
+
+$templatePath = Args::get('templatePath');
+if(null !== $templatePath)
+{
+    $builder->templatePath = $templatePath;
+}
+
 $builder->build();
