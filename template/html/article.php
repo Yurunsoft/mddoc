@@ -136,7 +136,7 @@
 						item.url = new Array(<?=substr_count($currentCatalog['url'], '/')?> + 1).join('../') + item.url;
 						return item;
 					}
-
+					document.title = '<?= $pageTitle ?>';
 					var currentCatalog = parseCatalogItem(<?=json_encode($currentCatalog)?>);
 					var catalogList = <?=json_encode($data['catalogList'])?>;
 					for(var i = 0; i < catalogList.length; ++i)
