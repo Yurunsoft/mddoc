@@ -8,7 +8,7 @@ mddoc 兼容 GitBook Editor 编辑的格式，可以说 mddoc 是不想装 Node 
 
 其实我开发 mddoc 的本意，其实是因为我用的虚拟主机，不能装 Node 环境。想要实现 webhook 自动生成比较困难，所以就用 php 写了这个……
 
-具体效果你现在看的这个文档就是使用 mddoc 生成哒！（https://doc.yurunsoft.com/mddoc）
+具体效果你现在看的这个文档就是使用 mddoc 生成哒！（ https://doc.yurunsoft.com/mddoc ）
 
 Github：https://github.com/Yurunsoft/mddoc.git
 
