@@ -88,6 +88,7 @@ class Builder
         $this->prepareBuildData();
         $this->buildDocs();
         $this->buildSearchJS();
+        $this->copyFiles();
     }
 
     /**
@@ -214,4 +215,16 @@ class Builder
         $content = str_replace('<li>[ ]', '<li><input type="checkbox" disabled/>', $content);
         return $content;
     }
+
+    protected function copyFiles()
+    {
+        File::copy($this->markdownPath, $this->htmlPath, function($from, $to){
+            $ext = pathinfo($from, PATHINFO_EXTENSION);
+            if(in_array($ext, ['.md']))
+            {
+                return false;
+            }
+        });
+    }
+
 }

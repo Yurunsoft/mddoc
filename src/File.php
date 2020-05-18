@@ -42,10 +42,15 @@ abstract class File
 	 * 复制文件，自动判断是文件还是目录
 	 * @param string $from
 	 * @param string $to
+	 * @param callable $conditionCallback
 	 * @return boolean
 	 */
-	public static function copy($from, $to)
+	public static function copy($from, $to, $conditionCallback = null)
 	{
+		if($conditionCallback && false === $conditionCallback($from, $to))
+		{
+			return;
+		}
 		if(is_file($from))
 		{
 			return copy($from, $to);
