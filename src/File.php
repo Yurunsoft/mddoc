@@ -53,7 +53,7 @@ abstract class File
 		}
 		if(is_file($from))
 		{
-			return copy($from, $to);
+			return copy($from, $to, $conditionCallback);
 		}
 		else if(is_dir($from))
 		{
@@ -71,7 +71,7 @@ abstract class File
 				{
 					mkdir($toFileDir, 0755, true);
 				}
-				copy($fromFileName, $toFileName);
+				copy($fromFileName, $toFileName, $conditionCallback);
 			}
 		}
 		return false;
