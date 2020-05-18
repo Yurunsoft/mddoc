@@ -220,7 +220,7 @@ class Builder
     {
         File::copy($this->markdownPath, $this->htmlPath, function($from, $to){
             $ext = pathinfo($from, PATHINFO_EXTENSION);
-            if(in_array($ext, ['.md']))
+            if(in_array($ext, ['md']))
             {
                 return false;
             }
