@@ -64,16 +64,16 @@ abstract class File
 				{
 					continue;
 				}
-				if($conditionCallback && false === $conditionCallback($from, $to))
-				{
-					continue;
-				}
 				$relativePath = substr($fromFileName, $fromLen);
 				$toFileName = static::path($to, $relativePath);
 				$toFileDir = dirname($toFileName);
 				if(!is_dir($toFileDir))
 				{
 					mkdir($toFileDir, 0755, true);
+				}
+				if($conditionCallback && false === $conditionCallback($fromFileName, $toFileName))
+				{
+					continue;
 				}
 				copy($fromFileName, $toFileName);
 			}
