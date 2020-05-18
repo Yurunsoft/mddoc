@@ -47,13 +47,13 @@ abstract class File
 	 */
 	public static function copy($from, $to, $conditionCallback = null)
 	{
-		if($conditionCallback && false === $conditionCallback($from, $to))
-		{
-			return;
-		}
 		if(is_file($from))
 		{
-			return copy($from, $to, $conditionCallback);
+			if($conditionCallback && false === $conditionCallback($from, $to))
+			{
+				return;
+			}
+			return copy($from, $to);
 		}
 		else if(is_dir($from))
 		{
@@ -64,6 +64,10 @@ abstract class File
 				{
 					continue;
 				}
+				if($conditionCallback && false === $conditionCallback($from, $to))
+				{
+					continue;
+				}
 				$relativePath = substr($fromFileName, $fromLen);
 				$toFileName = static::path($to, $relativePath);
 				$toFileDir = dirname($toFileName);
@@ -71,7 +75,7 @@ abstract class File
 				{
 					mkdir($toFileDir, 0755, true);
 				}
-				copy($fromFileName, $toFileName, $conditionCallback);
+				copy($fromFileName, $toFileName);
 			}
 		}
 		return false;
