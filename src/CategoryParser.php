@@ -1,14 +1,13 @@
 <?php
-namespace Yurun\MdDoc;
 
-use Yurun\MdDoc\File;
+namespace Yurun\MdDoc;
 
 abstract class CategoryParser
 {
     public static function parse($content)
     {
         $contentList = explode('##', $content);
-        if(isset($contentList[1]))
+        if (isset($contentList[1]))
         {
             array_shift($contentList);
         }
@@ -20,42 +19,42 @@ abstract class CategoryParser
         $hasPart = false !== strpos($content, '##');
         $id = 0;
         $list = [];
-        foreach($contentList as $contentItem)
+        foreach ($contentList as $contentItem)
         {
             list($part) = explode("\n", $contentItem);
             $part = trim($part);
-            if('' !== $part)
+            if ('' !== $part)
             {
                 $partItem = [
-                    'id'        =>  ++$id,
-                    'parent_id' =>  0,
-                    'title'     =>  $part,
-                    'level'     =>  0,
-                    'children'  =>  [],
-                    'parent'    =>  null,
+                    'id'        => ++$id,
+                    'parent_id' => 0,
+                    'title'     => $part,
+                    'level'     => 0,
+                    'children'  => [],
+                    'parent'    => null,
                 ];
                 $list[] = &$partItem;
             }
             $count = preg_match_all('/(?P<space>[\t ]*)\*\s*\[(?P<title>[^\]]+)\]\((?P<mdFileName>[^\)]+)\)/', $contentItem, $matches);
-            if($count <= 0)
+            if ($count <= 0)
             {
                 return [];
             }
-            for($i = 0; $i < $count; ++$i)
+            for ($i = 0; $i < $count; ++$i)
             {
                 $mdFileName = &$matches['mdFileName'][$i];
                 $item = [
-                    'id'        =>  ++$id,
-                    'parent_id' =>  0,
-                    'title'     =>  $matches['title'][$i],
-                    'mdFileName'=>  $mdFileName,
-                    'url'       =>  str_replace('\\', '/', File::path(dirname($mdFileName), basename($mdFileName, '.' . pathinfo($mdFileName, PATHINFO_EXTENSION)) . '.html')),
-                    'level'     =>  strlen($matches['space'][$i]) / 2 + ($hasPart ? 1 : 0),
-                    'children'  =>  [],
-                    'parent'    =>  null,
+                    'id'         => ++$id,
+                    'parent_id'  => 0,
+                    'title'      => $matches['title'][$i],
+                    'mdFileName' => $mdFileName,
+                    'url'        => str_replace('\\', '/', File::path(\dirname($mdFileName), basename($mdFileName, '.' . pathinfo($mdFileName, \PATHINFO_EXTENSION)) . '.html')),
+                    'level'      => \strlen($matches['space'][$i]) / 2 + ($hasPart ? 1 : 0),
+                    'children'   => [],
+                    'parent'     => null,
                 ];
                 $item['url'] = trim($item['url'], './');
-                if(isset($partItem))
+                if (isset($partItem))
                 {
                     $list[] = $item;
                 }
@@ -65,7 +64,7 @@ abstract class CategoryParser
                 }
             }
             unset($item);
-            if(isset($partItem))
+            if (isset($partItem))
             {
                 unset($partItem);
             }
@@ -73,18 +72,18 @@ abstract class CategoryParser
         $result = [];
         $lastItem = null;
         $first = true;
-        foreach($list as &$item)
+        foreach ($list as &$item)
         {
-            if($first && isset($item['url']))
+            if ($first && isset($item['url']))
             {
                 $item['url'] = 'index.html';
                 $first = false;
             }
-            if(0 === $item['level'])
+            if (0 === $item['level'])
             {
                 $result[] = &$item;
             }
-            else if($lastItem['level'] === $item['level'])
+            elseif ($lastItem['level'] === $item['level'])
             {
                 $item['parent'] = &$lastItem['parent'];
                 $item['parent_id'] = $lastItem['parent_id'];
@@ -93,9 +92,9 @@ abstract class CategoryParser
             else
             {
                 $tmpLastItem = &$lastItem;
-                while(true)
+                while (true)
                 {
-                    if($tmpLastItem['level'] + 1 === $item['level'])
+                    if ($tmpLastItem['level'] + 1 === $item['level'])
                     {
                         $item['parent'] = &$tmpLastItem;
                         $item['parent_id'] = $tmpLastItem['id'];
@@ -107,15 +106,16 @@ abstract class CategoryParser
             }
             $lastItem = &$item;
         }
-        foreach($list as $k => $v)
+        foreach ($list as $k => $v)
         {
             unset($list[$k]['parent']);
         }
         $list = json_decode(json_encode($list), true);
-        foreach($list as $k => $v)
+        foreach ($list as $k => $v)
         {
             unset($list[$k]['children']);
         }
+
         return [$list, $result];
     }
 }

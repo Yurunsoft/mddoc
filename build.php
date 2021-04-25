@@ -1,6 +1,7 @@
 <?php
+
 // 禁止非 cli 方式运行
-if('cli' !== PHP_SAPI)
+if ('cli' !== \PHP_SAPI)
 {
     exit('are you ok?');
 }
@@ -12,13 +13,13 @@ use Yurun\MdDoc\Builder;
 Args::init();
 
 $markdownPath = Args::get('markdownPath');
-if(null === $markdownPath)
+if (null === $markdownPath)
 {
     exit('-markdownPath can not be null');
 }
 
 $htmlPath = Args::get('htmlPath');
-if(null === $htmlPath)
+if (null === $htmlPath)
 {
     exit('-htmlPath can not be null');
 }
@@ -26,7 +27,7 @@ if(null === $htmlPath)
 $builder = new Builder($markdownPath, $htmlPath);
 
 $templatePath = Args::get('templatePath');
-if(null !== $templatePath)
+if (null !== $templatePath)
 {
     $builder->templatePath = $templatePath;
 }
