@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 
 // 禁止非 cli 方式运行
@@ -5,7 +6,20 @@ if ('cli' !== \PHP_SAPI)
 {
     exit('are you ok?');
 }
-require_once __DIR__ . '/vendor/autoload.php';
+
+$fileName = __DIR__ . '/vendor/autoload.php';
+if (is_file($fileName))
+{
+    require_once $fileName;
+}
+else
+{
+    $fileName = $_SERVER['PWD'] . '/vendor/autoload.php';
+    if (is_file($fileName))
+    {
+        require_once $fileName;
+    }
+}
 
 use Yurun\MdDoc\Args;
 use Yurun\MdDoc\Builder;
