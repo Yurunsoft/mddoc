@@ -10,7 +10,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "joyqi/hyper-down" : "dev-master",
-        "yurunsoft/yurun-http": "~2.0"
+        "joyqi/hyper-down" : "~2.4.0",
+        "yurunsoft/yurun-http": "~3.4.0"
     }
 }
