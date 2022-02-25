@@ -50,7 +50,14 @@ abstract class CategoryParser
                     $anchorPoint = rtrim($anchorPoint, '#');
                 }
                 $markdownFullPath = File::path($markdownPath, $mdFileName);
-                $markdownContent = file_get_contents($markdownFullPath);
+                if (is_file($markdownFullPath))
+                {
+                    $markdownContent = file_get_contents($markdownFullPath);
+                }
+                else
+                {
+                    $markdownContent = '';
+                }
                 preg_match('/#\s*([^\r\n]+)/', $markdownContent . \PHP_EOL, $matches2);
                 $item = [
                     'id'         => ++$id,

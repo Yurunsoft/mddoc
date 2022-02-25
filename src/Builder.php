@@ -212,14 +212,16 @@ class Builder
             else
             {
                 $item = [
-                    'id'        => '',
+                    'id'        => uniqid('', true),
                     'title'     => $title,
                     'pageTitle' => $title,
                     'url'       => $url,
                 ];
             }
 
-            $this->articles[$item['id']] = $articleContent;
+            $articleItem = $item;
+            $articleItem['content'] = $articleContent;
+            $this->articles[$item['id']] = $articleItem;
             ob_start();
             $this->renderTemplate(File::path($this->templatePath, 'html/article.php'), [
                 'data'              => $this->buildData,
@@ -255,11 +257,11 @@ class Builder
         $savePath = File::path($this->htmlPath, 'statics/js/mddoc-search.js');
         ob_start();
         $searchDatas = [];
-        foreach ($this->buildData['catalogList'] as $item)
+        foreach ($this->articles as $item)
         {
             if (isset($item['url']))
             {
-                $item['content'] = preg_replace('/<[^>]+>/', '', $this->articles[$item['id']]);
+                $item['content'] = preg_replace('/<[^>]+>/', '', $item['content']);
                 $searchDatas[] = $item;
             }
         }
