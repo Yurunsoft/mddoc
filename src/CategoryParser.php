@@ -44,12 +44,17 @@ abstract class CategoryParser
             for ($i = 0; $i < $count; ++$i)
             {
                 $mdFileName = &$matches['mdFileName'][$i];
+                list($mdFileName, $anchorPoint) = explode('#', $mdFileName . '#', 2);
+                if ('' !== $anchorPoint)
+                {
+                    $anchorPoint = rtrim($anchorPoint, '#');
+                }
                 $item = [
                     'id'         => ++$id,
                     'parent_id'  => 0,
                     'title'      => $matches['title'][$i],
                     'mdFileName' => $mdFileName,
-                    'url'        => str_replace('\\', '/', File::path(\dirname($mdFileName), basename($mdFileName, '.' . pathinfo($mdFileName, \PATHINFO_EXTENSION)) . '.html')),
+                    'url'        => str_replace('\\', '/', File::path(\dirname($mdFileName), basename($mdFileName, '.' . pathinfo($mdFileName, \PATHINFO_EXTENSION)) . '.html')) . ('' === $anchorPoint ? '' : ('#' . $anchorPoint)),
                     'level'      => \strlen($matches['space'][$i]) / 2 + ($hasPart ? 1 : 0),
                     'children'   => [],
                     'parent'     => null,
