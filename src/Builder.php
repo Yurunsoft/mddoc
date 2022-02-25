@@ -200,7 +200,10 @@ class Builder
             }
             $url = trim(str_replace('\\', '/', File::path(\dirname($mdFileName), $baseName . '.html')), './');
             $savePath = File::path($this->htmlPath, $url);
-            $articleContent = $this->markdownToHtml(file_get_contents($mdFileFullName));
+            $markdownContent = file_get_contents($mdFileFullName);
+            preg_match('/#\s*([^\r\n]+)/', $markdownContent . \PHP_EOL, $matches);
+            $title = $matches[1] ?? '';
+            $articleContent = $this->markdownToHtml($markdownContent);
 
             if (isset($this->buildData['fileNameRelation'][$mdFileName]))
             {
@@ -209,9 +212,10 @@ class Builder
             else
             {
                 $item = [
-                    'id'    => '',
-                    'title' => '',
-                    'url'   => $url,
+                    'id'        => '',
+                    'title'     => $title,
+                    'pageTitle' => $title,
+                    'url'       => $url,
                 ];
             }
 
@@ -269,6 +273,11 @@ class Builder
         $content = $this->parser->makeHtml($content);
         $content = str_replace('<li>[x]', '<li><input type="checkbox" disabled checked/>', $content);
         $content = str_replace('<li>[ ]', '<li><input type="checkbox" disabled/>', $content);
+        $content = preg_replace_callback('/(<h\d)(>)([^<]+)(<\/h\d>)/', function ($matches) {
+            $anchorPoint = htmlspecialchars($matches[3]);
+
+            return $matches[1] . ' id="' . $anchorPoint . '"' . $matches[2] . '<a href="#' . $anchorPoint . '">' . $matches[3] . '</a>' . $matches[4];
+        }, $content);
 
         return $content;
     }

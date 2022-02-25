@@ -272,6 +272,18 @@ span.tmpzTreeMove_arrow {
 
 .markdown-body a {
 	background: transparent;
+	color: #4183c4;
+	text-decoration: none;
+}
+
+.markdown-body h1 > a
+,.markdown-body h2 > a
+,.markdown-body h3 > a
+,.markdown-body h4 > a
+,.markdown-body h5 > a
+,.markdown-body h6 > a {
+	color: inherit;
+	text-decoration: none;
 }
 
 .markdown-body a:active, .markdown-body a:hover {
@@ -330,11 +342,6 @@ span.tmpzTreeMove_arrow {
 
 .markdown-body input {
 	font: 13px/1.4 Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-}
-
-.markdown-body a {
-	color: #4183c4;
-	text-decoration: none;
 }
 
 .markdown-body a:hover, .markdown-body a:active {

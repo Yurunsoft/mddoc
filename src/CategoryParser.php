@@ -49,10 +49,14 @@ abstract class CategoryParser
                 {
                     $anchorPoint = rtrim($anchorPoint, '#');
                 }
+                $markdownFullPath = File::path($markdownPath, $mdFileName);
+                $markdownContent = file_get_contents($markdownFullPath);
+                preg_match('/#\s*([^\r\n]+)/', $markdownContent . \PHP_EOL, $matches2);
                 $item = [
                     'id'         => ++$id,
                     'parent_id'  => 0,
                     'title'      => $matches['title'][$i],
+                    'pageTitle'  => $matches2[1] ?? $matches['title'][$i],
                     'mdFileName' => $mdFileName,
                     'url'        => str_replace('\\', '/', File::path(\dirname($mdFileName), basename($mdFileName, '.' . pathinfo($mdFileName, \PATHINFO_EXTENSION)) . '.html')) . ('' === $anchorPoint ? '' : ('#' . $anchorPoint)),
                     'level'      => \strlen($matches['space'][$i]) / 2 + ($hasPart ? 1 : 0),
@@ -61,7 +65,7 @@ abstract class CategoryParser
                 ];
                 $item['url'] = trim($item['url'], './');
                 $list[] = $item;
-                $fileNameRelation[File::path($markdownPath, $mdFileName)] = $item;
+                $fileNameRelation[$markdownFullPath] = $item;
             }
             unset($item);
             if (isset($partItem))
