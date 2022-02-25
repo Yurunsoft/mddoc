@@ -189,16 +189,24 @@ class Builder
     protected function buildDocs()
     {
         $markdownPathLen = \strlen($this->markdownPath) + 1;
+        $firstItem = $this->buildData['catalog'][0] ?? null;
         foreach (File::enumFile($this->markdownPath) as $file)
         {
             $mdFileFullName = $file[0];
-            $mdFileName = substr($mdFileFullName, $markdownPathLen);
             $baseName = basename($mdFileFullName, '.' . pathinfo($mdFileFullName, \PATHINFO_EXTENSION));
             if ('SUMMARY' === $baseName)
             {
-                $baseName = 'index';
+                continue;
             }
-            $url = trim(str_replace('\\', '/', File::path(\dirname($mdFileName), $baseName . '.html')), './');
+            $mdFileName = substr($mdFileFullName, $markdownPathLen);
+            if ($firstItem && $firstItem['mdFileName'] === $mdFileName)
+            {
+                $url = $firstItem['url'];
+            }
+            else
+            {
+                $url = trim(str_replace('\\', '/', File::path(\dirname($mdFileName), $baseName . '.html')), './');
+            }
             $savePath = File::path($this->htmlPath, $url);
             $markdownContent = file_get_contents($mdFileFullName);
             preg_match('/#\s*([^\r\n]+)/', $markdownContent . \PHP_EOL, $matches);
