@@ -9,39 +9,67 @@ abstract class File
      *
      * @param string $dirPath
      *
-     * @return \RecursiveIterator
+     * @return \RecursiveIteratorIterator|array
      */
-    public static function enum($dirPath, $recursiveIteratorIteratorFlags = 0)
+    public static function enum($dirPath)
     {
         if (!is_dir($dirPath))
         {
-            return;
+            return [];
         }
-        $iterator = new \RecursiveDirectoryIterator($dirPath);
-        $files = new \RecursiveIteratorIterator($iterator, $recursiveIteratorIteratorFlags);
-        foreach ($files as $file)
+        $iterator = new \RecursiveDirectoryIterator($dirPath, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS);
+
+        return new \RecursiveIteratorIterator($iterator);
+    }
+
+    /**
+     * 枚举文件.
+     *
+     * @return \RegexIterator|\ArrayIterator
+     */
+    public static function enumFile(string $dirPath, string $pattern = '/^.+\.md$/i')
+    {
+        if (!is_dir($dirPath))
         {
-            yield $file;
+            return new \ArrayIterator();
         }
+        $directory = new \RecursiveDirectoryIterator($dirPath);
+        $iterator = new \RecursiveIteratorIterator($directory);
+
+        return new \RegexIterator($iterator, $pattern, \RecursiveRegexIterator::GET_MATCH);
     }
 
     /**
      * 组合路径，目录后的/不是必须.
      *
-     * @param string $path
-     * @param string $fileName
-     *
-     * @return string
+     * @param string ...$args
      */
-    public static function path($path, $fileName)
+    public static function path(string ...$args): string
     {
-        $result = $path;
-        if (\DIRECTORY_SEPARATOR !== substr($path, -1, 1))
+        if (!$args)
         {
-            $result .= \DIRECTORY_SEPARATOR;
+            return '';
+        }
+        $offset = strpos($args[0], '://');
+        if (false === $offset)
+        {
+            $offset = 0;
+            $ds = \DIRECTORY_SEPARATOR;
+            $dsds = \DIRECTORY_SEPARATOR . \DIRECTORY_SEPARATOR;
+        }
+        else
+        {
+            $offset += 3;
+            $ds = '/';
+            $dsds = '//';
+        }
+        $result = implode($ds, $args);
+        while (false !== ($offset = strpos($result, (string) $dsds, $offset)))
+        {
+            $result = substr_replace($result, $ds, $offset, 2);
         }
 
-        return $result . $fileName;
+        return $result;
     }
 
     /**

@@ -9,9 +9,9 @@
         }
     },
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.1.0",
         "joyqi/hyper-down" : "~2.4.0",
-        "yurunsoft/yurun-http": "~3.4.0"
+        "yurunsoft/yurun-http": "~4.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "~2.18.0"

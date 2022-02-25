@@ -4,7 +4,7 @@ namespace Yurun\MdDoc;
 
 abstract class CategoryParser
 {
-    public static function parse($content)
+    public static function parse($content, $markdownPath)
     {
         $contentList = explode('##', $content);
         if (isset($contentList[1]))
@@ -19,6 +19,7 @@ abstract class CategoryParser
         $hasPart = false !== strpos($content, '##');
         $id = 0;
         $list = [];
+        $fileNameRelation = [];
         foreach ($contentList as $contentItem)
         {
             list($part) = explode("\n", $contentItem);
@@ -54,14 +55,8 @@ abstract class CategoryParser
                     'parent'     => null,
                 ];
                 $item['url'] = trim($item['url'], './');
-                if (isset($partItem))
-                {
-                    $list[] = $item;
-                }
-                else
-                {
-                    $list[] = $item;
-                }
+                $list[] = $item;
+                $fileNameRelation[File::path($markdownPath, $mdFileName)] = $item;
             }
             unset($item);
             if (isset($partItem))
@@ -116,6 +111,6 @@ abstract class CategoryParser
             unset($list[$k]['children']);
         }
 
-        return [$list, $result];
+        return [$list, $result, $fileNameRelation];
     }
 }

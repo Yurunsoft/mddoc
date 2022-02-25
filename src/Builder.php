@@ -70,8 +70,16 @@ class Builder
      */
     public function __construct($markdownPath, $htmlPath)
     {
-        $this->markdownPath = $markdownPath;
-        $this->htmlPath = $htmlPath;
+        if (!is_dir($markdownPath))
+        {
+            mkdir($markdownPath, 0777, true);
+        }
+        $this->markdownPath = realpath($markdownPath);
+        if (!is_dir($htmlPath))
+        {
+            mkdir($htmlPath, 0777, true);
+        }
+        $this->htmlPath = realpath($htmlPath);
         $this->templatePath = static::getDefaultTemplatePath();
         $this->parser = new Parser();
     }
@@ -127,7 +135,15 @@ class Builder
      */
     public function clearHtmlPath()
     {
-        File::clearDir($this->htmlPath);
+        if (!\in_array($this->htmlPath, [
+            '',
+            './',
+            '.',
+            '/',
+        ]))
+        {
+            File::clearDir($this->htmlPath);
+        }
     }
 
     /**
@@ -152,12 +168,17 @@ class Builder
         ];
 
         $catalogFileName = File::path($this->markdownPath, 'SUMMARY.md');
-        $content = file_get_contents($catalogFileName);
-        list($catalogList, $catalog) = CategoryParser::parse($content);
-        // 列表
-        $this->buildData['catalogList'] = $catalogList;
-        // children关系
-        $this->buildData['catalog'] = $catalog;
+        if (is_file($catalogFileName))
+        {
+            $content = file_get_contents($catalogFileName);
+            list($catalogList, $catalog, $fileNameRelation) = CategoryParser::parse($content, $this->markdownPath);
+            // 列表
+            $this->buildData['catalogList'] = $catalogList;
+            // children关系
+            $this->buildData['catalog'] = $catalog;
+            // children关系
+            $this->buildData['fileNameRelation'] = $fileNameRelation;
+        }
     }
 
     /**
@@ -167,17 +188,35 @@ class Builder
      */
     protected function buildDocs()
     {
-        foreach ($this->buildData['catalogList'] as &$item)
+        $markdownPathLen = \strlen($this->markdownPath) + 1;
+        foreach (File::enumFile($this->markdownPath) as $file)
         {
-            if (!isset($item['url']))
+            $mdFileFullName = $file[0];
+            $mdFileName = substr($mdFileFullName, $markdownPathLen);
+            $baseName = basename($mdFileFullName, '.' . pathinfo($mdFileFullName, \PATHINFO_EXTENSION));
+            if ('SUMMARY' === $baseName)
             {
-                continue;
+                $baseName = 'index';
             }
-            ob_start();
-            $fileName = $item['url'];
-            $savePath = File::path($this->htmlPath, $fileName);
-            $articleContent = $this->markdownToHtml(file_get_contents(File::path($this->markdownPath, $item['mdFileName'])));
+            $url = trim(str_replace('\\', '/', File::path(\dirname($mdFileName), $baseName . '.html')), './');
+            $savePath = File::path($this->htmlPath, $url);
+            $articleContent = $this->markdownToHtml(file_get_contents($mdFileFullName));
+
+            if (isset($this->buildData['fileNameRelation'][$mdFileName]))
+            {
+                $item = $this->buildData['fileNameRelation'][$mdFileName];
+            }
+            else
+            {
+                $item = [
+                    'id'    => '',
+                    'title' => '',
+                    'url'   => $url,
+                ];
+            }
+
             $this->articles[$item['id']] = $articleContent;
+            ob_start();
             $this->renderTemplate(File::path($this->templatePath, 'html/article.php'), [
                 'data'              => $this->buildData,
                 'currentCatalog'    => $item,

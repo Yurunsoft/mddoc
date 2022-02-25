@@ -5,25 +5,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<?php
-	$pageTitle = $currentCatalog['title'] . '-' . $this->config['name'] . ' - mddoc';
-	?>
-	<title><?= $pageTitle ?></title>
+    $pageTitle = $currentCatalog['title'] . '-' . $this->config['name'] . ' - mddoc';
+    ?>
+	<title><?php echo $pageTitle; ?></title>
     <!-- jQuery-->
-    <script src="<?=$this->path('statics/plugin/jquery/jquery-1.12.0.min.js')?>"></script>
+    <script src="<?php echo $this->path('statics/plugin/jquery/jquery-1.12.0.min.js'); ?>"></script>
 	<!-- layui -->
-    <link rel="stylesheet" href="<?=$this->path('statics/plugin/layui/css/layui.css')?>" />
-    <script src="<?=$this->path('statics/plugin/layui/layui.all.js')?>"></script>
+    <link rel="stylesheet" href="<?php echo $this->path('statics/plugin/layui/css/layui.css'); ?>" />
+    <script src="<?php echo $this->path('statics/plugin/layui/layui.all.js'); ?>"></script>
 	<!-- zTree -->
-    <link rel="stylesheet" href="<?=$this->path('statics/plugin/zTree/css/zTreeStyle/zTreeStyle.css')?>" />
-    <script src="<?=$this->path('statics/plugin/zTree/js/jquery.ztree.core.js')?>"></script>
+    <link rel="stylesheet" href="<?php echo $this->path('statics/plugin/zTree/css/zTreeStyle/zTreeStyle.css'); ?>" />
+    <script src="<?php echo $this->path('statics/plugin/zTree/js/jquery.ztree.core.js'); ?>"></script>
 	<!-- SyntaxHighlighter -->
-	<script src="<?=$this->path('statics/plugin/SyntaxHighlighter/shCore.js')?>" type="text/javascript"></script>
-	<link rel="stylesheet" type="text/css" href="<?=$this->path('statics/plugin/SyntaxHighlighter/shCoreDefault.css')?>"/>
+	<script src="<?php echo $this->path('statics/plugin/SyntaxHighlighter/shCore.js'); ?>" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->path('statics/plugin/SyntaxHighlighter/shCoreDefault.css'); ?>"/>
 	<!-- 自定义 -->
-    <link rel="stylesheet" href="<?=$this->path('statics/css/style.css')?>" />
-    <script src="<?=$this->path('statics/js/home.js')?>"></script>
-	<link rel="stylesheet" href="<?=$this->path('statics/css/docView.css')?>" />
-    <script src="<?=$this->path('statics/js/docView.js')?>"></script>
+    <link rel="stylesheet" href="<?php echo $this->path('statics/css/style.css'); ?>" />
+    <script src="<?php echo $this->path('statics/js/home.js'); ?>"></script>
+	<link rel="stylesheet" href="<?php echo $this->path('statics/css/docView.css'); ?>" />
+    <script src="<?php echo $this->path('statics/js/docView.js'); ?>"></script>
 </head>
 <body>
 	<!-- top-begin -->
@@ -36,7 +36,7 @@
 			</div>
 		</ul>
 		<div class="nav-menu">
-			<a href="<?=$this->path('')?>" class="logo"><?=$this->config['name']?></a>
+			<a href="<?php echo $this->path(''); ?>" class="logo"><?php echo $this->config['name']; ?></a>
 			<a href="javascript:;" id="navMenuLeft"><i class="layui-icon">&#xe658;</i></a>
 			<a href="javascript:;" id="navMenuRight"><i class="layui-icon">&#xe61a;</i></a>
 		</div>
@@ -136,12 +136,12 @@
 				<script>
 					function parseCatalogItem(item)
 					{
-						item.url = new Array(<?=substr_count($currentCatalog['url'], '/')?> + 1).join('../') + item.url;
+						item.url = new Array(<?php echo substr_count($currentCatalog['url'], '/'); ?> + 1).join('../') + item.url;
 						return item;
 					}
-					document.title = '<?= $pageTitle ?>';
-					var currentCatalog = parseCatalogItem(<?=json_encode($currentCatalog)?>);
-					var catalogList = <?=json_encode($data['catalogList'])?>;
+					document.title = '<?php echo $pageTitle; ?>';
+					var currentCatalog = parseCatalogItem(<?php echo json_encode($currentCatalog); ?>);
+					var catalogList = <?php echo json_encode($data['catalogList']); ?>;
 					for(var i = 0; i < catalogList.length; ++i)
 					{
 						if(void 0 !== catalogList[i].url)
@@ -151,7 +151,7 @@
 					}
 					initTree(catalogList);
 				</script>
-                <?=$articleContent?>
+                <?php echo $articleContent; ?>
 			</div>
 		</div>
 	</div>
@@ -199,6 +199,6 @@
 			}
 		})
 	</script>
-    <script src="<?=$this->path('statics/js/mddoc-search.js')?>"></script>
+    <script src="<?php echo $this->path('statics/js/mddoc-search.js'); ?>"></script>
 </body>
 </html>

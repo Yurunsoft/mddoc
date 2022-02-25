@@ -100,8 +100,11 @@ function initTree(data)
 	}
 	var treeObj = $("#treeDirectory");
 	$.fn.zTree.init(treeObj, ajaxSetting, data);
-	zTree_Menu = $.fn.zTree.getZTreeObj("treeDirectory");
-	zTree_Menu.selectNode(zTree_Menu.getNodeByParam('id', currentCatalog.id, null));
+	if ('' !== currentCatalog.id)
+	{
+		zTree_Menu = $.fn.zTree.getZTreeObj("treeDirectory");
+		zTree_Menu.selectNode(zTree_Menu.getNodeByParam('id', currentCatalog.id, null));
+	}
 }
 
 function onClick(event, treeId, treeNode)
