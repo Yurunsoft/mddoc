@@ -213,9 +213,9 @@ class Builder
             $title = $matches[1] ?? '';
             $articleContent = $this->markdownToHtml($markdownContent);
 
-            if (isset($this->buildData['fileNameRelation'][$mdFileFullName]))
+            if (isset($this->buildData['fileNameRelation'][$mdFileName]))
             {
-                $item = $this->buildData['fileNameRelation'][$mdFileFullName];
+                $item = $this->buildData['fileNameRelation'][$mdFileName];
             }
             else
             {

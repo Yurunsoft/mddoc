@@ -72,7 +72,6 @@ abstract class CategoryParser
                 ];
                 $item['url'] = trim($item['url'], './');
                 $list[] = $item;
-                $fileNameRelation[$markdownFullPath] = $item;
             }
             unset($item);
             if (isset($partItem))
@@ -118,6 +117,10 @@ abstract class CategoryParser
                 }
             }
             $lastItem = &$item;
+            if (isset($item['mdFileName']))
+            {
+                $fileNameRelation[$item['mdFileName']] = $item;
+            }
         }
         foreach ($list as $k => $v)
         {
