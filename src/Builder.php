@@ -283,7 +283,7 @@ class Builder
         $content = $this->parser->makeHtml($content);
         $content = str_replace('<li>[x]', '<li><input type="checkbox" disabled checked/>', $content);
         $content = str_replace('<li>[ ]', '<li><input type="checkbox" disabled/>', $content);
-        $content = preg_replace_callback('/(<h\d)(>)([^<]+)(<\/h\d>)/', function ($matches) {
+        $content = preg_replace_callback('/(<h[0-6])(>)(.+?)(<\/h[0-6]>)/', function ($matches) {
             $anchorPoint = htmlspecialchars($matches[3]);
 
             return $matches[1] . ' id="' . $anchorPoint . '"' . $matches[2] . '<a href="#' . $anchorPoint . '">' . $matches[3] . '</a>' . $matches[4];
