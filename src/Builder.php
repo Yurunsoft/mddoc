@@ -171,13 +171,13 @@ class Builder
         if (is_file($catalogFileName))
         {
             $content = file_get_contents($catalogFileName);
-            list($catalogList, $catalog, $fileNameRelation) = CategoryParser::parse($content, $this->markdownPath);
+            list($catalogList, $catalog, $fileNameRelation, $firstItem) = CategoryParser::parse($content, $this->markdownPath);
             // 列表
             $this->buildData['catalogList'] = $catalogList;
             // children关系
             $this->buildData['catalog'] = $catalog;
-            // children关系
             $this->buildData['fileNameRelation'] = $fileNameRelation;
+            $this->buildData['firstItem'] = $firstItem;
         }
     }
 
@@ -189,7 +189,7 @@ class Builder
     protected function buildDocs()
     {
         $markdownPathLen = \strlen($this->markdownPath) + 1;
-        $firstItem = $this->buildData['catalog'][0] ?? null;
+        $firstItem = $this->buildData['firstItem'];
         foreach (File::enumFile($this->markdownPath) as $file)
         {
             $mdFileFullName = $file[0];
@@ -213,9 +213,9 @@ class Builder
             $title = $matches[1] ?? '';
             $articleContent = $this->markdownToHtml($markdownContent);
 
-            if (isset($this->buildData['fileNameRelation'][$mdFileName]))
+            if (isset($this->buildData['fileNameRelation'][$mdFileFullName]))
             {
-                $item = $this->buildData['fileNameRelation'][$mdFileName];
+                $item = $this->buildData['fileNameRelation'][$mdFileFullName];
             }
             else
             {

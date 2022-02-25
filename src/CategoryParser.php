@@ -83,11 +83,13 @@ abstract class CategoryParser
         $result = [];
         $lastItem = null;
         $first = true;
+        $firstItem = null;
         foreach ($list as &$item)
         {
             if ($first && isset($item['url']))
             {
                 $item['url'] = 'index.html';
+                $firstItem = $item;
                 $first = false;
             }
             if (0 === $item['level'])
@@ -127,6 +129,6 @@ abstract class CategoryParser
             unset($list[$k]['children']);
         }
 
-        return [$list, $result, $fileNameRelation];
+        return [$list, $result, $fileNameRelation, $firstItem];
     }
 }
