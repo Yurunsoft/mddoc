@@ -288,6 +288,7 @@ class Builder
 
             return $matches[1] . ' id="' . $anchorPoint . '"' . $matches[2] . '<a href="#' . $anchorPoint . '">' . $matches[3] . '</a>' . $matches[4];
         }, $content);
+        $content = str_ireplace('[toc]', '<div id="content-toc-wrap"><p class="content-toc-title">目录</p><div id="content-toc"></div></div>', $content);
 
         return $content;
     }
@@ -295,7 +296,7 @@ class Builder
     protected function copyFiles()
     {
         File::copy($this->markdownPath, $this->htmlPath, function ($from, $to) {
-            $ext = pathinfo($from, \PATHINFO_EXTENSION);
+            $ext = pathinfo((string) $from, \PATHINFO_EXTENSION);
             if (\in_array($ext, ['md']))
             {
                 return false;
