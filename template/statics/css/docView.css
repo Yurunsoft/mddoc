@@ -809,6 +809,7 @@ span.tmpzTreeMove_arrow {
     border-bottom: 1px solid #eee;
     padding: 0.5em;
     font-weight: bold;
+	cursor: move;
 }
 
 @media screen and (max-width: 768px){
