@@ -251,7 +251,7 @@ $(function(){
 	});
 
 	$('#btn-about').click(function(){
-		layer.alert('本文档由 <a href="https://github.com" target="_blank">mddoc</a> 生成！');
+		layer.alert('本文档由 <a href="https://github.com/Yurunsoft/mddoc" target="_blank">mddoc</a> 生成！');
 	});
 
 	initContentToc();
