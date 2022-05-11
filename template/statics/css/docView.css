@@ -786,6 +786,10 @@ span.tmpzTreeMove_arrow {
     border: 1px solid #eee;
 }
 
+#content-toc {
+    overflow: auto;
+}
+
 #content-toc ol{
 	overflow: auto;
 }

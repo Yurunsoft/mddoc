@@ -121,6 +121,7 @@ function parseLeftHeight()
 
 function onContentChange()
 {
+	$('#content-toc').css('max-height', ($(document).height() / 2) + 'px');
 	hCatalog('#article-content', '#content-toc');
 	var content = $('#article-content');
 	content.find('blockquote').addClass('layui-elem-quote');
