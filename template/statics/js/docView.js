@@ -180,10 +180,13 @@ function hCreatEle(arr, parent) {
 	if (!arr.length) return
 	var ol = document.createElement('ol')
 	arr.forEach(function(item) {
-		var li = document.createElement('li')
-		li.innerHTML = item.node.innerHTML
-		hCreatEle(item.children, li)
-		ol.appendChild(li)
+		if ('' !== item.node.innerHTML)
+		{
+			var li = document.createElement('li')
+			li.innerHTML = item.node.innerHTML
+			hCreatEle(item.children, li)
+			ol.appendChild(li)
+		}
 	})
 	parent.appendChild(ol)
 }
