@@ -1,5 +1,7 @@
 # 介绍
 
+[TOC]
+
 mddoc 是一个开源的 markdown 文档转 html 文档工具，它使用 php 开发，支持 php &gt;= 5.4。它生成的 html 可以直接放在网站上，支持全文搜索、自定义 html 模版。
 
 mddoc 同时支持命令行、git webhook生成，不光可以本地生成后上传，也可以直接做成 webhook 自动部署生成，非常简单。
