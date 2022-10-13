@@ -67,8 +67,15 @@ function getChapter(url)
 			var resultElement = $(result);
 			$('#article-content').html(resultElement.find('#article-content').html());
 			onContentChange();
-			// 有时切换文档不在最上面
-			$('#content_body').scrollTop(0)
+			var hash = location.hash;
+			if (hash.length > 0) {
+				location.hash = '';
+				location.hash = hash;
+			}
+			else {
+				// 有时切换文档不在最上面
+				$('#content_body').scrollTop(0)
+			}
 		},
 		error: function(){
 			location = url;
