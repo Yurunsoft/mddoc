@@ -214,7 +214,7 @@ class Builder
             $articleContent = $this->markdownToHtml($markdownContent);
 
             $item = [
-                'id'        => uniqid('', true),
+                'id'        => $this->buildData['fileNameRelation'][$mdFileName]['id'] ?? uniqid('', true),
                 'title'     => $title,
                 'pageTitle' => $title,
                 'url'       => $url,
