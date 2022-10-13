@@ -7,7 +7,7 @@ function initSearchDatas()
 	{
 		if(void 0 !== searchDatas[i].url)
 		{
-			searchDatas[i] = parseCatalogItem(searchDatas[i]);
+            searchDatas[i].url = rootPath + searchDatas[i].url;
 		}
 	}
 	doSearch($('#search-keyword').val());

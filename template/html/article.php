@@ -134,22 +134,30 @@
 		<div id="content_body" name="content_body" style="width:100%;height:100%;border:none;overflow: auto;">
             <div id="article-content" class="markdown-body">
 				<script>
-					function parseCatalogItem(item)
-					{
-						item.url = new Array(<?php echo substr_count($currentCatalog['url'], '/'); ?> + 1).join('../') + item.url;
-						return item;
-					}
-					document.title = '<?php echo $pageTitle; ?>';
-					var currentCatalog = parseCatalogItem(<?php echo json_encode($currentCatalog); ?>);
-					var catalogList = <?php echo json_encode($data['catalogList']); ?>;
-					for(var i = 0; i < catalogList.length; ++i)
-					{
-						if(void 0 !== catalogList[i].url)
-						{
-							catalogList[i] = parseCatalogItem(catalogList[i]);
-						}
-					}
-					initTree(catalogList);
+                    document.title = '<?php echo $pageTitle; ?>';
+                    var currentCatalog = <?php echo json_encode($currentCatalog, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE); ?>;
+                    if (location.hash.length > 0)
+                    {
+                        var url = currentCatalog.url.substr(0, currentCatalog.url.length - location.hash.length);
+                    }
+                    else
+                    {
+                        var url = currentCatalog.url;
+                    }
+                    var rootPath = location.pathname.substr(0, location.pathname.indexOf(url));
+                    if('' === rootPath)
+                    {
+                        rootPath = location.pathname;
+                    }
+                    var catalogList = <?php echo json_encode($data['catalogList'], \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE); ?>;
+                    for(var i = 0; i < catalogList.length; ++i)
+                    {
+                        if(void 0 !== catalogList[i].url)
+                        {
+                            catalogList[i].url = rootPath + catalogList[i].url;
+                        }
+                    }
+                    initTree(catalogList);
 				</script>
                 <?php echo $articleContent; ?>
 			</div>
