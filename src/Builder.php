@@ -213,19 +213,12 @@ class Builder
             $title = $matches[1] ?? '';
             $articleContent = $this->markdownToHtml($markdownContent);
 
-            if (isset($this->buildData['fileNameRelation'][$mdFileName]))
-            {
-                $item = $this->buildData['fileNameRelation'][$mdFileName];
-            }
-            else
-            {
-                $item = [
-                    'id'        => uniqid('', true),
-                    'title'     => $title,
-                    'pageTitle' => $title,
-                    'url'       => $url,
-                ];
-            }
+            $item = [
+                'id'        => uniqid('', true),
+                'title'     => $title,
+                'pageTitle' => $title,
+                'url'       => $url,
+            ];
 
             $articleItem = $item;
             $articleItem['content'] = $articleContent;
