@@ -98,13 +98,20 @@ function initTree(data)
 	{
 		data[i].target = '_self';
 	}
-	var treeObj = $("#treeDirectory");
-	$.fn.zTree.init(treeObj, ajaxSetting, data);
-	zTree_Menu = $.fn.zTree.getZTreeObj("treeDirectory");
-	var node = zTree_Menu.getNodeByParam('id', currentCatalog.id, null);
-	if (null !== node)
-	{
-		zTree_Menu.selectNode();
+	if (null === menuTree) {
+		var treeObj = $("#treeDirectory");
+		$.fn.zTree.init(treeObj, ajaxSetting, data);
+		menuTree = $.fn.zTree.getZTreeObj("treeDirectory");
+		var nodes = menuTree.getNodesByParam('url', location.pathname + location.hash, null);
+		if (nodes.length > 0) {
+			if (nodes.length > 1) {
+				console.log('menuTree.getSelectedNodes()', menuTree.getSelectedNodes());
+				if (menuTree.getSelectedNodes().length > 0) {
+					return;
+				}
+			}
+			menuTree.selectNode(nodes[0]);
+		}
 	}
 }
 
