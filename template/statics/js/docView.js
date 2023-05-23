@@ -99,6 +99,8 @@ function addDiyDom(treeId, treeNode) {
 	}
 }
 
+var menuTree = null;
+
 function initTree(data)
 {
 	for(var i in data)
