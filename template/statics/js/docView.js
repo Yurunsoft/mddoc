@@ -1,4 +1,4 @@
-var curMenu = null, zTree_Menu = null;
+var curMenu = null, menuTree = null;
 var ajaxSetting = {
 	edit: {
 		drag: {
@@ -98,8 +98,6 @@ function addDiyDom(treeId, treeNode) {
 		switchObj.before(spaceStr);
 	}
 }
-
-var menuTree = null;
 
 function initTree(data)
 {
